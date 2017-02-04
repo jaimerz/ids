@@ -39,7 +39,7 @@ public class RegistryServer{
 							Person p = (Person)objIn.readObject();
 							registry.add(p);
 							//out.println("Contact added successfully!");
-							objOut.writeObject("Contact added successfully!");
+							objOut.writeObject("\nContact added successfully!");
 							objOut.flush();
 						break;
 
@@ -50,11 +50,11 @@ public class RegistryServer{
 
 							if(phone != null){
 								//out.println("Phone: " + phone);
-								objOut.writeObject("Phone: " + phone);
+								objOut.writeObject("\n" + name + "\'s phone is: " + phone);
 								objOut.flush();
 							}else{
 								//out.println("\'"+name+"\' did not match any contacts! Please try again!");
-								objOut.writeObject("\'"+name+"\' did not match any contacts! Please try again!");
+								objOut.writeObject("\n\'"+name+"\' did not match any contacts! Please try again!");
 								objOut.flush();
 							}	
 						break;

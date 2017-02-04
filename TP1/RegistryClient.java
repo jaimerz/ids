@@ -31,13 +31,14 @@ System.out.println("object streams created");
 			System.out.println("Before menu");
 			while (true) {
 				
-				System.out.println("\nMenu:");
+				System.out.print("\033[H\033[2J");
+				System.out.println("\nMenu:\n");
 				System.out.println("1. Add contact");
 				System.out.println("2. Get phone");
 				System.out.println("3. Search contact");
 				System.out.println("4. Get all contacts");
 				System.out.println("5. Exit");
-				System.out.print("Enter your operation: ");
+				System.out.print("\nEnter your operation: ");
 				
 				if((userInput = stdIn.readLine()) != null){
 
@@ -62,7 +63,7 @@ System.out.println("object streams created");
 					switch(op){
 
 						case 1:
-							System.out.print("Enter contact name: ");
+							System.out.print("\nEnter contact name: ");
 							name = stdIn.readLine();
 							System.out.print("Enter contact phone: ");
 							String phone = stdIn.readLine();
@@ -71,20 +72,24 @@ System.out.println("object streams created");
 							objOut.flush();
 							//System.out.print(in.readLine());
 							System.out.print((String)objIn.readObject());
+							System.out.print("\n\nPress \'Enter\' to continue...");
+							stdIn.readLine();
 						break;
 
 						case 2:
-							System.out.print("Enter contact name: ");
+							System.out.print("\nEnter contact name: ");
 							name = stdIn.readLine();
 							//out.println(name);
 							objOut.writeObject(name);
 							objOut.flush();
 							//System.out.print(in.readLine());
 							System.out.print((String)objIn.readObject());
+							System.out.print("\n\nPress \'Enter\' to continue...");
+							stdIn.readLine();
 						break;
 
 						case 3:
-							System.out.print("Enter contact name: ");
+							System.out.print("\nEnter contact name: ");
 							name = stdIn.readLine();
 							//out.println(name);
 							objOut.writeObject(name);
@@ -92,18 +97,27 @@ System.out.println("object streams created");
 							person = (Person)objIn.readObject();
 							
 							if(person != null)
-								System.out.println(person.print());
+								System.out.println("\n"+person.print());
 							else
 								System.out.println("\'"+name+"\' does not match any contact.");
+
+							System.out.print("\n\nPress \'Enter\' to continue...");
+							stdIn.readLine();
 						break;
 
 						case 4:
 							list = (Iterable<Person>)objIn.readObject();
+							System.out.println();
 							if(list == null)
 								System.out.println("Contact list is empty!");
 							else
-								for(Person p : list)
+								for(Person p : list){
 									System.out.println(p.print());
+									System.out.println();
+								}
+
+							System.out.print("\n\nPress \'Enter\' to continue...");
+							stdIn.readLine();
 						break;
 
 					}

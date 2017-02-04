@@ -14,7 +14,9 @@ public class Registry implements Registry_itf, Serializable {
 	}
 
 	public Iterable<Person> getAll(){
-		return list.values();
+		return new ArrayList(list.values());
+
+		//Iterable<Person>list.values();
 	}
 	
 	public String getPhone(String name){
