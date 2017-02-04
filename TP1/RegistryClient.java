@@ -12,17 +12,20 @@ public class RegistryClient {
 		String hostName = args[0];
 		int portNumber = Integer.parseInt(args[1]);
 		System.out.println("Trying");
-		try (
+		//try (
 				Socket echoSocket = new Socket(hostName, portNumber);
-				PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+				System.out.println("socket created");
+				//PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
+				//BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-
+System.out.println("BufferedReader created");
 				//New code
-				ObjectInputStream objIn = new ObjectInputStream(echoSocket.getInputStream());
+				
 				ObjectOutputStream objOut = new ObjectOutputStream(echoSocket.getOutputStream());
-
-			) {
+				objOut.flush();
+				ObjectInputStream objIn = new ObjectInputStream(echoSocket.getInputStream());
+System.out.println("object streams created");
+		//	) {
 
 			String userInput;
 			System.out.println("Before menu");
@@ -39,8 +42,11 @@ public class RegistryClient {
 				if((userInput = stdIn.readLine()) != null){
 
 					byte op = Byte.parseByte(userInput);
-					if(op>0 && op<5)
-						out.println(userInput);
+					if(op>0 && op<5){
+						//out.println(userInput);
+						objOut.writeObject(userInput);
+						objOut.flush();
+					}
 					else if(op == 5){
 						System.out.println("Exiting...");
 						System.exit(0);
@@ -62,20 +68,27 @@ public class RegistryClient {
 							String phone = stdIn.readLine();
 							person = new Person(name, phone);
 							objOut.writeObject(person);
-							System.out.print(in.readLine());
+							objOut.flush();
+							//System.out.print(in.readLine());
+							System.out.print((String)objIn.readObject());
 						break;
 
 						case 2:
 							System.out.print("Enter contact name: ");
 							name = stdIn.readLine();
-							out.println(name);
-							System.out.print(in.readLine());
+							//out.println(name);
+							objOut.writeObject(name);
+							objOut.flush();
+							//System.out.print(in.readLine());
+							System.out.print((String)objIn.readObject());
 						break;
 
 						case 3:
 							System.out.print("Enter contact name: ");
 							name = stdIn.readLine();
-							out.println(name);
+							//out.println(name);
+							objOut.writeObject(name);
+							objOut.flush();
 							person = (Person)objIn.readObject();
 							
 							if(person != null)
@@ -97,7 +110,7 @@ public class RegistryClient {
 				}
 			}
 
-
+/*
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + hostName);
 			System.exit(1);
@@ -105,5 +118,5 @@ public class RegistryClient {
 			System.err.println("Couldn't get I/O for the connection to " + hostName);
 			System.exit(1);
 		}
-	}
+*/	}
 }

@@ -1,4 +1,6 @@
-public class Person {
+import java.io.*;
+
+public class Person implements Serializable {
 	private String name;
 	private String phone;
 	

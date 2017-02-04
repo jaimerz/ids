@@ -13,19 +13,21 @@ public class RegistryServer{
 
 		int portNumber = Integer.parseInt(args[0]);
 
-		try(
+		//try(
 			ServerSocket serverSocket = new ServerSocket(Integer.parseInt(args[0]));
 			Socket clientSocket = serverSocket.accept();
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			//PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+			//BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
 			//New code
-			ObjectInputStream objIn = new ObjectInputStream(clientSocket.getInputStream());
 			ObjectOutputStream objOut = new ObjectOutputStream(clientSocket.getOutputStream());
-		){
+			objOut.flush();
+			ObjectInputStream objIn = new ObjectInputStream(clientSocket.getInputStream());
+		//){/
 			
 			String inputLine;
-			while((inputLine = in.readLine()) != null){
+			//while((inputLine = in.readLine()) != null){
+			while((inputLine = (String)objIn.readObject()) != null){
 				//out.println(inputLine);
 				byte op = Byte.parseByte(inputLine);
 				String name;
@@ -36,36 +38,47 @@ public class RegistryServer{
 						case 1:
 							Person p = (Person)objIn.readObject();
 							registry.add(p);
-							out.println("Contact added successfully!");
+							//out.println("Contact added successfully!");
+							objOut.writeObject("Contact added successfully!");
+							objOut.flush();
 						break;
 
 						case 2:
-							name = in.readLine();
+							//name = in.readLine();
+							name = (String)objIn.readObject();
 							phone = registry.getPhone(name);
 
-							if(phone != null)
-								out.println("Phone: " + phone);
-							else
-								out.println("\'"+name+"\' did not match any contacts! Please try again!");
+							if(phone != null){
+								//out.println("Phone: " + phone);
+								objOut.writeObject("Phone: " + phone);
+								objOut.flush();
+							}else{
+								//out.println("\'"+name+"\' did not match any contacts! Please try again!");
+								objOut.writeObject("\'"+name+"\' did not match any contacts! Please try again!");
+								objOut.flush();
+							}	
 						break;
 
 						case 3:
-							name = in.readLine();
+							//name = in.readLine();
+							name = (String)objIn.readObject();
 							objOut.writeObject(registry.search(name));
+							objOut.flush();
 						break;
 
 						case 4:
 							objOut.writeObject(registry.getAll());
+							objOut.flush();
 						break;
 
 					}
 
 			}
-		}catch(IOException e){
+		/*}catch(IOException e){
 			System.out.println("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
 			System.out.println(e.getMessage());
 		}
-		
+		*/
 
 	}
 }
