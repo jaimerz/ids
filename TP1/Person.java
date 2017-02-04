@@ -6,6 +6,10 @@ public class Person {
 
 	}
 
+	public Person(String name){
+		this.phone = phone;
+	}
+
 	public Person(String name, String phone){
 		this.name = name;
 		this.phone = phone;
@@ -25,5 +29,9 @@ public class Person {
 
 	void setPhone(String phone){
 		this.phone = phone;
+	}
+
+	String print(){
+		return "Name: " + this.name + "\n" + "Phone: " + this.phone;
 	}
 }
