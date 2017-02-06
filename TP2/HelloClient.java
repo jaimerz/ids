@@ -5,7 +5,7 @@ public class HelloClient {
 	public static void main(String [] args) {
 		try {
 			
-			if (args.length < 1) {
+			if (args.length < 2) {
 				System.out.println("Usage: java HelloClient <rmiregistry host>");
 				return;
 			}
@@ -17,7 +17,7 @@ public class HelloClient {
 			Hello h = (Hello) registry.lookup("HelloService");
 
 			// Remote method invocation
-			String res = h.sayHello();
+			String res = h.sayHello(args[1]);
 			System.out.println(res);
 
 		} catch (Exception e) {

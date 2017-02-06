@@ -8,7 +8,8 @@ public class HelloImpl implements Hello {
 		message = s ;
 	}
 
-	public String sayHello() throws RemoteException {
+	public String sayHello(String clientName) throws RemoteException {
+		System.out.println("Client name: " + clientName);
 		return message ;
 	}
 }
