@@ -14,8 +14,8 @@ public class HelloServer {
 			// Register the remote object in RMI registry with a given identifier
 			Registry registry = LocateRegistry.getRegistry();
 
-			if(registry.lookup("HelloService") != null)
-				registry.unbind("HelloService");			
+			//if(registry.lookup("HelloService") != null)
+			//	registry.unbind("HelloService");			
 
 			registry.bind("HelloService", h_stub);
 
