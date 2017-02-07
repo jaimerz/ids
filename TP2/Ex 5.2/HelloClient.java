@@ -1,7 +1,19 @@
 import java.rmi.*;
 import java.rmi.registry.*;
+import java.rmi.server.*;
 
 public class HelloClient implements Info_itf {
+
+	private String name;
+
+	public HelloClient(String name){
+		this.name = name;
+	}
+
+	public String getName() throws RemoteException {
+		return name;
+	}
+
 	public static void main(String [] args) {
 		try {
 			
@@ -17,7 +29,10 @@ public class HelloClient implements Info_itf {
 			Hello h = (Hello) registry.lookup("HelloService");
 
 			// Remote method invocation
-			String res = h.sayHello(args[1]);
+			HelloClient client = new HelloClient(args[1]);
+			Info_itf c_stub = (Info_itf) UnicastRemoteObject.exportObject(client, 0);
+
+			String res = h.sayHello(c_stub);
 			System.out.println(res);
 
 		} catch (Exception e) {
